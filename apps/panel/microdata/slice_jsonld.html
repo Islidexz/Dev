@@ -1,0 +1,18 @@
+{# slice_jsonld.html #}
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Service",
+  "name": "{{ slice.title }}",
+  "description": "{{ slice.text | safe }}",
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "RUB",
+    "price": "{{ slice.price }}",
+    "availability": "http://schema.org/InStock"
+  }
+  {% if slice.img %}
+  ,"image": "{{ request.build_absolute_uri(slice.img.url) }}"
+  {% endif %}
+}
+</script>
