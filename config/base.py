@@ -61,8 +61,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # Uncomment or add custom context processors as needed
-                # 'apps.panel.templatetags.context_processors.get_site_data',
             ],
         },
     },
@@ -70,18 +68,17 @@ TEMPLATES = [
 
 # Application definition
 INSTALLED_APPS = [
-    #'taggit',
-    #'django_cleanup',
-    #'filebrowser',
-    #'grappelli',
-    'django.contrib.sitemaps', # 
+    #'taggit',    #'django_cleanup',    #'filebrowser',    #'grappelli', 
+    #django.contrib.sitemaps', #     #'django.contrib.sites', # explain: https://docs.djangoproject.com/en/3.2/ref/contrib/sites/
+
+
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'django.contrib.sites', # explain: https://docs.djangoproject.com/en/3.2/ref/contrib/sites/
     'django.contrib.humanize', # explain: https://docs.djangoproject.com/en/3.2/ref/contrib/humanize/
     'apps.panel',
     'mptt',

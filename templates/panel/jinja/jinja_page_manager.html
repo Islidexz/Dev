@@ -144,7 +144,7 @@
             <!-- Page Slices -->
             <div class="slices-container">
                 {% for slice in page_data.slices %}
-                    {% include 'panel/microdata/slice_jsonld.html' %}
+              <!--       {% include 'microdata/slice_jsonld.html' %} -->
                     {{ render_slice(slice) }}
                 {% endfor %}
             </div>

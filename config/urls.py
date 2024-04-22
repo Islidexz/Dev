@@ -12,7 +12,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('get_set_objects/', get_objects, name='get_set_objects'),
     path('<path:url>/', page_view, name='page-detail'),
-    #path('favicon.ico', lambda request: HttpResponseNotFound()),
+    path('favicon.ico', lambda request: HttpResponseNotFound()),
     path('tinymce/', include('tinymce.urls')),
     
     #path('admin/get_set_objects/', get_objects, name='get_objects'),
