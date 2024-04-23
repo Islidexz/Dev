@@ -22,6 +22,7 @@
 ### Команды Git для настройки удаленного репозитория
 ### Adds the repository as a remote origin commits can be pushed to it later
 ```bash
+cd /var/www/www-root/data/www/to-create.online/nails
 
 git push origin main
 git pull origin main
