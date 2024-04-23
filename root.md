@@ -1,24 +1,31 @@
-ROOT
-root
-verystrongly
+# Конфигурация сервера
 
-Mysql
-admin
-verystronglysecret
+## Учетные данные
 
+### ROOT доступ
+- Пользователь: `root`
+- Пароль: `verystrongly`
 
-www-root
-?????
-verystronglysecret \ verystrongly \ verystrong
+### MySQL Администратор
+- Пользователь: `admin`
+- Пароль: `verystronglysecret`
 
+### Директория www-root
+- Пользователь: `www-root`
+- Пароль: `verystronglysecret \ verystrongly \ verystrong`
 
-https://github.com/Islidexz/server_backup
+## Копирование на GitHub
+- Репозиторий: [GitHub - dev](https://github.com/Islidexz/dev.git) Основной репозиторий
+- Репозиторий для бэкапа: [GitHub - server_backup](https://github.com/Islidexz/server_backup)
+- GitHub Token: `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`
 
+### Команды Git для настройки удаленного репозитория
+### Adds the repository as a remote origin commits can be pushed to it later
+```bash
 
-Github Token: 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
+git remote add origin https://github.com/Islidexz/dev.git
+git push -u origin main
 
-# Adds the repository as a remote origin so that
-# commits can be pushed to it later
 git remote add origin https://github.com/Islidexz/server_backup.git
 
 mv /var/www/www-root/data/www/to-create.online/nails
@@ -26,7 +33,3 @@ mv /var/www/www-root/data/www/to-create.online/nails
 
 /var/www/www-root/data/www/to-create.online/nails
 
-Здравствуйте Елизавета, вчера обнаружил, что, произошел казус. 
-Я перепутал данные в Аудите, попали данные по другому отелю( 
-Как в школе ей богу на контрольной) есть ли возможность переделать тестовое? 
-Очень обидно, если это испортило впечатление, мне такие ошибки обычно не свойственны. 
