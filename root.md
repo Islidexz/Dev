@@ -26,9 +26,11 @@ https://188.120.233.15:1500/ispmgr#/login
 ### Adds the repository as a remote origin commits can be pushed to it later
 
 ```bash
+cd /var/www/www-root/data/www/to-create.online/venv/bin 
+source activate 
 
 cd /var/www/www-root/data/www/to-create.online/nails
-source Scripts/activate.sh
+
 
 git push origin main
 git pull origin main
