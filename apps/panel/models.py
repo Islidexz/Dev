@@ -94,8 +94,12 @@ class Slice(models.Model):
         return self.title
                                   ######
     def save(self, *args, **kwargs):
-        if self.file.name.endswith('.svg'):
-            self.file = process_svg(self.file, 'file')
+        # Обработка поля img, если оно содержит '.svg'
+        if self.img and self.img.name.endswith('.svg'):
+            self.img = process_svg(self.img, 'img')
+        # Обработка поля icon, если оно содержит '.svg'
+        if self.icon and self.icon.name.endswith('.svg'):
+            self.icon = process_svg(self.icon, 'icon')
         super().save(*args, **kwargs)
 
 
