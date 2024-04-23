@@ -2,6 +2,9 @@
 
 ## Учетные данные
 
+### Ispmgr
+https://188.120.233.15:1500/ispmgr#/login
+
 ### ROOT доступ
 - Пользователь: `root`
 - Пароль: `verystrongly`
@@ -21,8 +24,11 @@
 
 ### Команды Git для настройки удаленного репозитория
 ### Adds the repository as a remote origin commits can be pushed to it later
+
 ```bash
+
 cd /var/www/www-root/data/www/to-create.online/nails
+source Scripts/activate.sh
 
 git push origin main
 git pull origin main
