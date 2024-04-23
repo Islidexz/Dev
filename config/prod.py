@@ -15,6 +15,7 @@ DATABASES = {
         'PASSWORD': 'verystronglysecret',
         'HOST': 'localhost',
         'PORT': '3306',
+        'ATOMIC_REQUESTS': True,
         'OPTIONS': {
             'init_command': "SET default_storage_engine=InnoDB; SET collation_connection=utf8mb4_unicode_ci;"
         }
