@@ -71,8 +71,6 @@ INSTALLED_APPS = [
     #'taggit',    #'django_cleanup',    #'filebrowser',    #'grappelli', 
     #django.contrib.sitemaps', #     #'django.contrib.sites', # explain: https://docs.djangoproject.com/en/3.2/ref/contrib/sites/
 
-
-    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

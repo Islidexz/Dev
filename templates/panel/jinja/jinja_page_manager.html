@@ -141,10 +141,9 @@
         {% endfor %}
     </ul>
 
-            <!-- Page Slices -->
+            <!-- Page Slices include 'microdata/slice_jsonld.html'-->
             <div class="slices-container">
                 {% for slice in page_data.slices %}
-              <!--       {% include 'microdata/slice_jsonld.html' %} -->
                     {{ render_slice(slice) }}
                 {% endfor %}
             </div>
