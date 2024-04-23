@@ -1,3 +1,5 @@
+SET GLOBAL default_storage_engine = 'InnoDB';
+
 CREATE TABLE `panel_media` (
   `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
