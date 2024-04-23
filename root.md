@@ -23,10 +23,15 @@
 ### Adds the repository as a remote origin commits can be pushed to it later
 ```bash
 
+git push origin main
+git pull origin main
+
 git remote add origin https://github.com/Islidexz/dev.git
 git push -u origin main
 
 git remote add origin https://github.com/Islidexz/server_backup.git
+
+git branch --set-upstream-to=origin/main main # Set main branch as upstream looking for changes from main
 
 mv /var/www/www-root/data/www/to-create.online/nails
  /var/www/www-root/data/www/to-create.online/nails_backup
