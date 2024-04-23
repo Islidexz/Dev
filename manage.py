@@ -3,7 +3,10 @@ import sys
 
 if __name__ == '__main__':
     #os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.dev')
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.prod')
+    if os.getenv('HTTPS') == 'on':
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.prod')
+    else:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.dev')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

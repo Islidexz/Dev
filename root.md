@@ -35,7 +35,7 @@ cd /var/www/www-root/data/www/to-create.online/nails
 git push origin main
 git pull origin main
 
-git remote add origin https://github.com/Islidexz/dev.git
+ 
 git push -u origin main
 
 git remote add origin https://github.com/Islidexz/server_backup.git
