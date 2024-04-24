@@ -15,12 +15,12 @@ STATIC_ROOT = BASE_DIR / 'collected_static'  # Where static files are collected 
 # Media files (User-uploaded content)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media' #
-
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 # Templates
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')  
-TEMPLATES_DIR_FULL = os.path.join(BASE_DIR, 'templates/panel/jinja')
-ADMIN_TEMPLATE_DIR = os.path.join(BASE_DIR, '/apps/panel/admin/tpl') #c:\Users\User\Desktop\Nest\DEV\apps\panel\admin\tpl
+JINJA_FRONT = os.path.join(BASE_DIR, 'templates/panel/jinja')
+LOCAL_FRONT = os.path.join(BASE_DIR, '/apps/panel/frontend/jinja')
+LOCAL_ADMIN = os.path.join(BASE_DIR, '/apps/panel/admin/tpl') #c:\Users\User\Desktop\Nest\DEV\apps\panel\admin\tpl
 
 
 
@@ -29,30 +29,25 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': [TEMPLATES_DIR, TEMPLATES_DIR_FULL, ADMIN_TEMPLATE_DIR],  # Make sure this is the correct path to your templates directory
+        'DIRS': [TEMPLATES_DIR, JINJA_FRONT , LOCAL_FRONT, LOCAL_ADMIN],  # Make sure this is the correct path to your templates directory
         'APP_DIRS': True,
         'OPTIONS': {
             'environment': 'apps.panel.jinja.jinja_renderer.jinja_renderer',
             'extensions': [
                 'jinja2.ext.do',
                 'jinja2.ext.loopcontrols',
-                #'jinja2.ext.autoescape',
-                #'jinja2.ext.with_',
-                'django_jinja.builtins.extensions.StaticFilesExtension', # Add this line
-                # ... other Jinja2 extensions ...
+                'django_jinja.builtins.extensions.StaticFilesExtension', 
             ],
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                # Uncomment or add custom context processors as needed
-                # 'apps.panel.templatetags.context_processors.get_site_data',
             ],
         },
     },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         #'DIRS': [],
-        'DIRS': [str(BASE_DIR / 'templates'), str(ADMIN_TEMPLATE_DIR)],
+        'DIRS': [str(BASE_DIR / 'templates'), str(LOCAL_ADMIN)],
         'APP_DIRS': True,  # This must be True for Django admin to find its templates
         'OPTIONS': {
             'context_processors': [

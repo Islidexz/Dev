@@ -3,6 +3,7 @@ import os
 import sys
 from  config.environment_settings import set_django_settings_module
 
+
 if __name__ == '__main__':
     set_django_settings_module()
 
