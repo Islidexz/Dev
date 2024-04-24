@@ -40,6 +40,9 @@ git branch --set-upstream-to=origin/main main
 cd /var/www/www-root/data/www/to-create.online/venv
 source bin/activate # Убедитесь, что путь к скрипту активации верный
 
+
+git remote remove origin
+
 # Добавление удаленного репозитория, если он еще не добавлен
 git remote add origin https://github.com/Islidexz/dev.git
 
