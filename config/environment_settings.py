@@ -2,19 +2,6 @@
 import os
 from config.base import BASE_DIR
 
-
-def set_django_settings_module():
-    branch_name = os.popen('git rev-parse --abbrev-ref HEAD').read().strip()
-    print(f"Текущая ветка: {branch_name}")
-    if branch_name == 'origin/main':
-        print("------PRODUCTION: Устанавливаем настройки для PRODUCTION--------")
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.prod')
-    else:
-        print("--------LOCAL: Устанавливаем настройки для LOCAL----------")
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.dev')
-
-#set_django_settings_module()
-
 def set_django_settings_module():
     # Специфичная часть пути для сервера
     server_path_segment = 'www/to-create.online/nails'
@@ -27,7 +14,7 @@ def set_django_settings_module():
     print(f"BASE_DIR: {BASE_DIR}")
 
     # Проверяем имя ветки и путь
-    if branch_name == 'origin/main' or server_path_segment in base_dir.replace('\\', '/'):
+    if server_path_segment in base_dir.replace('\\', '/'):
         print("------PRODUCTION: Устанавливаем настройки для PRODUCTION--------")
         os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.prod')
     #elif branch_name == 'main' and server_path_segment in base_dir.replace('\\', '/'):

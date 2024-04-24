@@ -1,0 +1,13 @@
+#gunicorn.service
+Here's an example of what the file should look like:
+
+
+### [Unit]
+Description=gunicorn daemon for myproject
+After=network.target
+
+### [Service]
+User=username
+Group=www-data
+WorkingDirectory=/path/to/your/django/project
+ExecStart=/path/to/your/virtualenv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/path/to/your/django/project/myproject.sock myproject.wsgi:application

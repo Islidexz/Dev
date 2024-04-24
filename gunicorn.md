@@ -9,8 +9,7 @@ python3 -m venv myenv
 source myenv/bin/activate
 Now, install Gunicorn within the virtual environment:
 
-Copy
-Insert in Terminal
+
 pip install gunicorn
 Step 2: Test Gunicorn's Ability to Serve Your Django Project
 Before configuring Nginx, you should verify that Gunicorn can serve your Django application:
@@ -31,8 +30,7 @@ sudo apt install nginx
 Step 4: Configure Nginx to Proxy Pass to Gunicorn
 Create a new Nginx server block configuration file for your project:
 
-Copy
-Insert in Terminal
+
 sudo nano /etc/nginx/sites-available/myproject
 Here is a sample configuration. Make sure to replace /path/to/your/django/project, server_name, myproject.sock, and other placeholders with your actual information:
 
@@ -54,57 +52,55 @@ server {
 }
 Now, enable the file by linking it to the sites-enabled directory:
 
-Copy
-Insert in Terminal
+
 sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled
 Test your Nginx configuration for syntax errors:
 
-Copy
-Insert in Terminal
+
 sudo nginx -t
 If no errors are reported, restart Nginx to apply the changes:
 
-Copy
-Insert in Terminal
+
 sudo systemctl restart nginx
+
+
 Step 5: Create a Gunicorn systemd Service File
 Create a Gunicorn systemd service file for your project:
 
-Copy
-Insert in Terminal
 sudo nano /etc/systemd/system/gunicorn.service
 Here's an example of what the file should look like:
 
-Copy
-Insert
-[Unit]
+
+sudo nano /etc/systemd/system/gunicorn.service
+### [Unit]
 Description=gunicorn daemon for myproject
 After=network.target
 
-[Service]
+### [Service]
 User=username
 Group=www-data
 WorkingDirectory=/path/to/your/django/project
 ExecStart=/path/to/your/virtualenv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/path/to/your/django/project/myproject.sock myproject.wsgi:application
 
-[Install]
+### [Install]
 WantedBy=multi-user.target
 Replace username with your username and adjust paths and names as appropriate.
 
-Start and enable the Gunicorn service:
+### Start and enable the Gunicorn service:
 
-Copy
-Insert
 sudo systemctl start gunicorn
 sudo systemctl enable gunicorn
+
 Check the status to make sure everything is running smoothly:
 
-Copy
-Insert in Terminal
 sudo systemctl status gunicorn
+
 Step 6: Final Steps and Verifications
 Make sure your firewall allows traffic on port 80 (HTTP).
 Double-check that your Django settings include correct STATIC_ROOT and MEDIA_ROOT settings, and run python manage.py collectstatic to collect static files.
+
 Visit your domain name in a browser to ensure your Django application is being served by Gunicorn and proxied by Nginx.
+
 Remember to secure your server, for example, by setting up an SSL/TLS certificate with Let's Encrypt.
+
 This setup should give you a fully functioning Django application served by Gunicorn and fronted by Nginx on Ubuntu. Adjustments may be necessary based on your specific requirements and environment.
