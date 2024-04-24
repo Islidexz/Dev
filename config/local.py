@@ -1,6 +1,5 @@
-# dev.py
+# local.py
 from .base import *
-
 
 #DEBUG = False
 DEBUG = True

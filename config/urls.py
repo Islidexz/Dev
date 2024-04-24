@@ -1,8 +1,9 @@
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
-from config import dev as base
+from config import base
 from django.conf.urls.static import static
+from django.http import HttpResponseNotFound
                                         ###
 from apps.panel.views import *
 from apps.panel.admin_views import get_objects
