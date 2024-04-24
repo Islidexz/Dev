@@ -6,3 +6,5 @@ from config.environment_settings import set_django_settings_module
 set_django_settings_module()
 
 application = get_wsgi_application()
+
+
