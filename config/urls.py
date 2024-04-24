@@ -12,11 +12,12 @@ urlpatterns = [
     #path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
     path('get_set_objects/', get_objects, name='get_set_objects'),
-    path('<path:url>/', page_view, name='page-detail'),
-    path('', page_view, {'url': ''}, name='index'),
+    path('', page_view, {'url': ''}, name='home'), #
     path('favicon.ico', lambda request: HttpResponseNotFound()),
     path('tinymce/', include('tinymce.urls')),
-    
+   
+    path('<path:url>/', page_view, name='page-detail'),
+
     #path('admin/get_set_objects/', get_objects, name='get_objects'),
     #path('media/', media_view, name='media'),
     #path('menu/', filtered_menu_view, name='menu'),
