@@ -15,7 +15,7 @@ urlpatterns = [
     path('', page_view, {'url': ''}, name='home'), #
     path('favicon.ico', lambda request: HttpResponseNotFound()),
     path('tinymce/', include('tinymce.urls')),
-   
+    #after me please
     path('<path:url>/', page_view, name='page-detail'),
 
     #path('admin/get_set_objects/', get_objects, name='get_objects'),
