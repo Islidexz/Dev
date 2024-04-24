@@ -9,22 +9,21 @@ python3 -m venv myenv
 source myenv/bin/activate
 Now, install Gunicorn within the virtual environment:
 
-
+### Ubuntu
 pip install gunicorn
+
 Step 2: Test Gunicorn's Ability to Serve Your Django Project
 Before configuring Nginx, you should verify that Gunicorn can serve your Django application:
 
-Copy
-Insert
-cd /path/to/your/django/project
+
+cd /path/to/your/django/project #
 gunicorn --workers 3 myproject.wsgi:application
 Replace myproject with your Django project's name. You should see Gunicorn starting up. Test by going to http://127.0.0.1:8000 in your browser.
 
 Step 3: Install Nginx
 Now, install Nginx using apt:
 
-Copy
-Insert
+
 sudo apt update
 sudo apt install nginx
 Step 4: Configure Nginx to Proxy Pass to Gunicorn
