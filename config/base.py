@@ -19,7 +19,7 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 # Templates
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')  
 JINJA_FRONT = os.path.join(BASE_DIR, 'templates/panel/jinja')
-LOCAL_FRONT = os.path.join(BASE_DIR, '/apps/panel/frontend/jinja')
+LOCAL_FRONT = os.path.join(BASE_DIR, '/apps/panel/templates/jinja')
 LOCAL_ADMIN = os.path.join(BASE_DIR, '/apps/panel/admin/tpl') #c:\Users\User\Desktop\Nest\DEV\apps\panel\admin\tpl
 
 
@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize', # explain: https://docs.djangoproject.com/en/3.2/ref/contrib/humanize/
+    ###
     'apps.panel',
     'mptt',
     'tinymce',

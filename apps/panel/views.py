@@ -3,13 +3,9 @@ from mptt.templatetags.mptt_tags import *
 ###
 from .models import Page, Slice
 from .jinja.jinja_renderer import jinja_renderer
-from .page_manager import  *
+from .page_manager import *
 from .logger import log_page_tree 
-from django.utils.text import slugify 
-#django-filter
-# Do the JavaScript magic to update slug field while typing title
-
-logger = logging.getLogger(__name__)
+from django.http import HttpResponseNotFound
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +18,7 @@ def page_view(request, url):
         context = pm.build_page_context(url)
     except Page.DoesNotExist:
         # Если страница не найдена, возвращаем страницу с ошибкой 404
+        
         return HttpResponseNotFound('<h1>Page not found</h1>')
     
     # Остальная часть кода
@@ -46,8 +43,6 @@ def pm_view(request, url=None):
     rendered_template = template.render(context)
     return HttpResponse(rendered_template)
     
-
-   
 
 
         
