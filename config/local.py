@@ -21,4 +21,4 @@ DATABASES = {
         }
     }
 }
-# ... other development-specific settings
+# ... other development-specific unserversettings
