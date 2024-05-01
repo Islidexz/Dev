@@ -1,7 +1,7 @@
 import bleach
 
 STATE_CHOICES = (('active', 'Active'), ('inactive', 'Inactive')); 
-TYPE_CHOICES = (('cat', 'Category'), ('page', 'Page'),('tpl', 'Template'), ('price', 'Price'), ('addsome', 'addsome'))
+TYPE_CHOICES = (('cat', 'Category'), ('page', 'Page'),('tpl', 'HTML Template'), ('price', 'Price'), ('gallery', 'Gallery'))
 ###
 IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png']
 SVG_EXTENSIONS = ['svg']

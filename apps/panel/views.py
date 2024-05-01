@@ -3,46 +3,31 @@ from mptt.templatetags.mptt_tags import *
 ###
 from .models import Page, Slice
 from .jinja.jinja_renderer import jinja_renderer
-from .page_manager import  *
+from .page_manager import *
 from .logger import log_page_tree 
-from django.utils.text import slugify 
-#django-filter
-# Do the JavaScript magic to update slug field while typing title
+from django.http import HttpResponseNotFound
 
+logger = logging.getLogger(__name__)
 
 def page_view(request, url):
     pm = Page.objects
-    url = pm.extract_url(url)  # Extract the necessary part of the URL
-    #pm.clear_cache()  # Ensure that clear_cache method exists
-    #print(pm._build_url(page=page))
+    url = pm.extract_url(url)  # Извлечение части URL, если это необходимо
+    if url == '':
+        url = 'index'  # Установка значения по умолчанию для корневого URL
+    try:
+        context = pm.build_page_context(url)
+    except Page.DoesNotExist:
+        # Если страница не найдена, возвращаем страницу с ошибкой 404
+        
+        return HttpResponseNotFound('<h1>Page not found</h1>')
     
-    #pm.rebuild_tree()
-    logger.debug(f"Page: {url}")  #                                           #
-    context = pm.build_page_context(url)
-    #log_page_tree(page)
-                                                #
-    #parent_page_type = context.get('parent_page_type')  # Replace 'default_type' with your actual default
-    #logger.debug(f"Parent_page_type type: {type(parent_page_type)}, value: {parent_page_type}")
-    #current_level = int(context.get('current_level', 0)) # Convert levels to integers and add them to the context
-    #start_level = int(context.get('start_level', 0))
-    #end_level = int(context.get('end_level', 2))
-                                          #
-    #context.update({
-    #    'current_level': current_level,
-    #    'start_level': start_level,
-    #    'end_level': end_level
-    #})
-    #logger.debug(f"current_level type: {type(current_level)}, value: {current_level}")
-    #logger.debug(f"start_level type: {type(start_level)}, value: {start_level}")
-    #logger.debug(f"end_level type: {type(end_level)}, value: {end_level}")
-                                                #
+    # Остальная часть кода
     env = jinja_renderer()
     template = env.get_template('panel/jinja/jinja_page_manager.html')
     rendered_template = template.render(context)
     return HttpResponse(rendered_template)
-
                                                 #
-
+ 
 
 def pm_view(request, url=None):
     pm = Page.objects
@@ -59,7 +44,28 @@ def pm_view(request, url=None):
     return HttpResponse(rendered_template)
     
 
+
+        
+    # pm.clear_cache()  # Ensure that clear_cache method exists
+    # print(pm._build_url(page=page))
+    # pm.rebuild_tree()
+    # log_page_tree(page)
     
+    # parent_page_type = context.get('parent_page_type')  # Replace 'default_type' with your actual default
+    # logger.debug(f"Parent_page_type type: {type(parent_page_type)}, value: {parent_page_type}")
+    # current_level = int(context.get('current_level', 0)) # Convert levels to integers and add them to the context
+    # start_level = int(context.get('start_level', 0))
+    # end_level = int(context.get('end_level', 2))
+    
+    # context.update({
+    #     'current_level': current_level,
+    #     'start_level': start_level,
+    #     'end_level': end_level
+    # })
+    # logger.debug(f"current_level type: {type(current_level)}, value: {current_level}")
+    # logger.debug(f"start_level type: {type(start_level)}, value: {start_level}")
+    # logger.debug(f"end_level type: {type(end_level)}, value: {end_level}")
+
 def test_view(request):
     try:
         result = Page.objects.get_active_pages_dict()
