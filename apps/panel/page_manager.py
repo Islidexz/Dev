@@ -1,5 +1,6 @@
 from mptt.models import MPTTModel, TreeManager;from functools import wraps
 from typing import Dict, List, Any
+from django.core.cache import cache
 ###
 import logging; import time; import cProfile, pstats; from io import StringIO;
 from django.utils.functional import cached_property
@@ -20,14 +21,21 @@ MODEL_CACHE_CONFIG = {
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-
 def build_debug_tree(page_data, indent=0):
+    """
+    Выводит иерархическое дерево страниц в консоль для отладки.
+    Рекурсивно обходит детей каждой страницы, увеличивая отступ для вложенных элементов.
+    """
     print(' ' * indent + f"Title: {page_data['title']}, URL: {page_data['url']}")
     for child in page_data.get('children', []):
         build_debug_tree(child, indent + 2)
 
-
 def ensure_cache(func):
+    """
+    Декоратор для методов менеджера страниц. Проверяет инициализирован ли кэш страниц.
+    Если нет, вызывает метод cache_active_pages для кэширования страниц.
+    Замеряет время выполнения функции и логирует его.
+    """
     @wraps(func)
     def wrapper(manager, *args, **kwargs):
         start_time = time.time()
@@ -62,8 +70,9 @@ class PageManager(TreeManager):
     @ensure_cache
     def get_page_by_url(self, url):
         page = self.cached_pages.get(url)
-        if not page: logger.debug(f"Page not found in cache for URL '{url}', querying the database.")
-        page = self.get_queryset().filter(url=url).first()
+        if not page:
+            logger.debug(f"Page not found in cache for URL '{url}', querying the database.")
+            page = self.get_queryset().filter(url=url).first()
         return page
             
     def clear_cache(self):
@@ -74,18 +83,36 @@ class PageManager(TreeManager):
         self.clear_cache();logger.info("MPTT tree rebuild complete.")
     
     def extract_url(self, full_url: str) -> str:
-            return full_url.strip('/').split('/')[-1]
+        return full_url.strip('/').split('/')[-1]
 
     def build_menu(self) -> List[Dict[str, Any]]:
+        """
+        Строит список элементов меню из кэшированных страниц, используя _build_menu_item для каждой корневой страницы.
+        """
+        # ...        
         return [self._build_menu_item(page) for page in self.cached_pages.values() if page.level == 0]
     
     def _build_menu_item(self, page) -> Dict[str, Any]:
         logger.debug(f"Building menu item for page: {page.title} (URL: {page.url})")
-        return { 'title': page.title, 'full_url': self._build_url(page), 'level': page.level, 'children': [self._build_menu_item(child) for child in page.get_children()] }
-
+        # Если страница есть в кэше, получаем дочерние элементы из кэша
+        if self.cached_pages and page.url in self.cached_pages:
+            children_pages = self.cached_pages[page.url].children.all()
+        else:
+            # Если нет, получаем дочерние элементы из базы данных
+            children_pages = page.get_children()
+        return {
+            'title': page.title,
+            'full_url': self._build_url(page),
+            'level': page.level,
+            'children': [self._build_menu_item(child) for child in children_pages]
+        }
     
     #@cached_property # Cache the URL for each page 
     def _build_url(self, page) -> str:
+        """
+        Строит полный URL для страницы, используя кэшированные данные предков страницы.
+        Если URL не скэширован, выполняет его построение и добавляет в кэш.
+        """
         if not hasattr(self, 'cached_ancestors'):
             self.cached_ancestors = {}
         full_url = self.cached_ancestors.get(page.url)
@@ -99,6 +126,10 @@ class PageManager(TreeManager):
 
     @ensure_cache
     def build_breadcrumbs(self, page) -> List[Dict[str, Any]]:
+        """
+        Строит хлебные крошки для страницы, используя её предков.
+        REDO: Use the 'cached_ancestors' cache instead of 'get_ancestors'
+        """
         breadcrumbs = []
         while page:
             breadcrumbs.append({'title': page.title, 'full_url': self._build_url(page), 'level': page.level})
@@ -108,6 +139,18 @@ class PageManager(TreeManager):
 
     @ensure_cache
     def to_dict(self, node, include_children=False, include_slices=False, include_siblings=False):
+        """
+        Конвертирует узел (страницу или срез) в словарь, включающий заданные поля и возможные связи.
+        Параметры include_children, include_slices и include_siblings указывают,
+        нужно ли включать в словарь дочерние элементы, срезы и соседние узлы соответственно.
+        Декоратор @ensure_cache обеспечивает использование кэшированных данных для ускорения работы.
+        
+        :param node: Объект страницы или среза, который нужно преобразовать.
+        :param include_children: Флаг, включать ли дочерние узлы в результат.
+        :param include_slices: Флаг, включать ли срезы в результат.
+        :param include_siblings: Флаг, включать ли соседние узлы в результат.
+        :return: Словарь с данными узла.
+        """    
         from .models import Page, Slice
         model_type = 'page' if isinstance(node, Page) else 'slice' if isinstance(node, Slice) else None
         if not model_type:
@@ -135,6 +178,13 @@ class PageManager(TreeManager):
 
 
     def build_page_context(self, url: str, page=None) -> Dict[str, Any]:
+        """
+        Построение контекста для страницы по URL. 
+        Включает данные страницы, меню, хлебные крошки, уровень и тип текущей страницы.
+        ТУДУ: улучшить кэширование
+        """        
+        cache_key = f"page_context_{url}" # Cache key for the context 
+        context = cache.get(cache_key) # Try to get the context from the cache
         current_page = page or self.get_page_by_url(url)
         if current_page is None: 
             error_msg = f"No page found for URL '{url}'."
@@ -156,5 +206,9 @@ class PageManager(TreeManager):
                 # Use siblings directly from 'page_data'
                 'siblings': page_data.get('siblings', []),
             }
-        logger.debug(f"Current page title: {current_page.title}") 
+        #logger.debug(f"Current page title: {current_page.title}")
+        cache.set(cache_key, context)
+
+        build_debug_tree(page_data, 0) # Вывод в консоль для отладки
         return context
+
