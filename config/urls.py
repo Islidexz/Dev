@@ -9,15 +9,15 @@ from apps.panel.views import *
 from apps.panel.admin_views import get_objects
 
 urlpatterns = [
-    #path('grappelli/', include('grappelli.urls')),
-    path('admin/', admin.site.urls),
-    path('get_set_objects/', get_objects, name='get_set_objects'),
     path('', page_view, {'url': ''}, name='home'), #
+    path('admin/', admin.site.urls),
+    ######################################################
+    path('get_set_objects/', get_objects, name='get_set_objects'),
     path('favicon.ico', lambda request: HttpResponseNotFound()),
     path('tinymce/', include('tinymce.urls')),
     #after me please
     path('<path:url>/', page_view, name='page-detail'),
-
+    #path('grappelli/', include('grappelli.urls')),
     #path('admin/get_set_objects/', get_objects, name='get_objects'),
     #path('media/', media_view, name='media'),
     #path('menu/', filtered_menu_view, name='menu'),

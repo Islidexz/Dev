@@ -40,23 +40,7 @@ git branch --set-upstream-to=origin/main main
 cd /var/www/www-root/data/www/to-create.online/venv
 source bin/activate # Убедитесь, что путь к скрипту активации верный
 
-
 git remote remove origin
-
-# Добавление удаленного репозитория, если он еще не добавлен
-git remote add origin https://github.com/Islidexz/dev.git
-
-# Переход в директорию проекта
-cd /var/www/www-root/data/www/to-create.online/nails
-
-# Отправка изменений в основную ветку
-git push -u origin main
-
-# Получение последних изменений из основной ветки
-git pull origin main
-
-# Установка основной ветки в качестве отслеживаемой
-git branch --set-upstream-to=origin/main main
 
 # Просмотр состояния измененных файлов
 git status
