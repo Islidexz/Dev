@@ -7,17 +7,12 @@ from django.utils.functional import cached_property
 from config.base import *
 
 
-#import pm2 
-##################################
-# Fields to be cached for each model
-
 MODEL_CACHE_CONFIG = {
     'page': ['id', 'title', 'text', 'url', 'parent_id', 'level', 'type'],
     'slice': ['id', 'parent_page', 'state', 'title', 'is_main', 'price', 'text', 'timestamp', 'icon', 'img'],
 }
 
-####################################
-#logging.basicConfig(level=logging.DEBUG)
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
@@ -49,6 +44,18 @@ def ensure_cache(func):
         logger.info(f"Function {func.__name__} took {total_time:.2f} seconds.")
         return result
     return wrapper
+
+
+
+def wrapper(func):
+    def cache_wrapper(manager, *args, **kwargs):
+        cache_key = f"{func.__name__}_{args}_{kwargs}"
+        if result := cache.get(cache_key):
+            return result
+        result = func(manager, *args, **kwargs)
+        cache.set(cache_key, result, timeout=300)  # кэш на 5 минут
+        return result
+    return cache_wrapper
 
 class PageManager(TreeManager):
     def __init__(self, *args, **kwargs):
@@ -138,6 +145,7 @@ class PageManager(TreeManager):
 
 
     @ensure_cache
+    @wrapper
     def to_dict(self, node, include_children=False, include_slices=False, include_siblings=False):
         """
         Конвертирует узел (страницу или срез) в словарь, включающий заданные поля и возможные связи.
