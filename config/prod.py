@@ -1,8 +1,9 @@
 # prod.py
 from .base import *
 
-#DEBUG = False
-DEBUG = True
+#this loads if we on server
+DEBUG = False
+IS_SERVER = True
 # ... other production-specific settings
 
 ALLOWED_HOSTS = ['to-create.online', 'www.to-create.online', 'localhost', '127.0.0.1', '[::1]']

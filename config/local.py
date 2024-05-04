@@ -3,6 +3,9 @@ from .base import *
 
 #DEBUG = False
 DEBUG = True
+IS_SERVER = False
+print (f"DEBUG: {DEBUG}")
+print (f"IS_SERVER: {IS_SERVER}")
 # ... other production-specific settings
 
 ALLOWED_HOSTS = ['to-create.online', 'www.to-create.online', 'localhost', '127.0.0.1', '[::1]']
